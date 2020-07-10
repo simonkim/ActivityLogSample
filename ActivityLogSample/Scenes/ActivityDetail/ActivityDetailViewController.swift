@@ -14,6 +14,16 @@ import UIKit
 // Note = "(optional)
 // 1. Input: Photo, Title, Progress, Note
 // 2. Allow Save: (Photo, TItle) are entered
+struct Activity {
+    var title: String = ""
+    var photo: UIImage?
+    var progress: Double = 0
+    var note: String?
+    
+    var isPhotoSet: Bool { photo != nil }
+    var isValidForSaving: Bool { isPhotoSet && title.count > 0 }
+}
+
 class ActivityDetailViewController: UITableViewController {
 
     @IBOutlet weak var photoView: UIImageView!
@@ -21,6 +31,8 @@ class ActivityDetailViewController: UITableViewController {
     @IBOutlet weak var valueSlider: UISlider!
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var noteTextView: UITextView!
+    
+    var model = Activity()
     
     lazy var cancelButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancel(_:)))
@@ -32,24 +44,18 @@ class ActivityDetailViewController: UITableViewController {
         return item
     }()
 
-    
-    var isPhotoSet = false
-    
     override func viewDidLoad() {
         title = "Activity Detail"
         
         navigationItem.leftBarButtonItem = cancelButtonItem
         navigationItem.rightBarButtonItem = saveButtonItem
         
-        photoView.contentMode = .center
-        photoView.image = UIImage(systemName: "plus.square.fill")?
-            .resizing(CGSize(width: 20, height: 20))
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto(_:)))
         photoView.addGestureRecognizer(tap)
         
+        updateView()
     }
-    
+        
     @objc
     func didTapPhoto(_ sender: UIImageView) {
         
@@ -57,20 +63,20 @@ class ActivityDetailViewController: UITableViewController {
             guard let image = image else {
                 return
             }
-            photoView.image = image
-            photoView.contentMode = .scaleAspectFit
+            model.photo = image
+            updateView()
 
-            isPhotoSet = true
-            updateBackButton()
         }
     }
         
-    @IBAction func didEditTitle(_ sender: Any) {
-        updateBackButton()
+    @IBAction func didEditTitle(_ sender: UITextField) {
+        model.title = sender.text ?? ""
+        updateView()
     }
     
     @IBAction func didChangeProgress(_ sender: UISlider) {
-        valueLabel.text = "\(round(sender.value * 100)) %"
+        model.progress = Double(sender.value)
+        updateView()
     }
     
     @objc func didTapCancel(_ sender: UIBarButtonItem) {
@@ -78,22 +84,41 @@ class ActivityDetailViewController: UITableViewController {
     }
     
     @objc func didTapSave(_ sender: UIBarButtonItem) {
-        guard isPhotoSet && (titleTextField.text?.count ?? 0) > 0 else {
+        model.note = noteTextView.text
+        
+        guard model.isValidForSaving else {
             return
         }
         saveData()
         navigationController?.popViewController(animated: true)
     }
     
-    private func updateBackButton() {
-        saveButtonItem.isEnabled = isPhotoSet && (titleTextField.text?.count ?? 0) > 0
+    private func updateView() {
+        titleTextField.text = model.title
+        if let photo = model.photo {
+            photoView.image = photo
+            photoView.contentMode = .scaleAspectFit
+        } else {
+            photoView.image = UIImage(systemName: "plus.square.fill")?
+                .resizing(CGSize(width: 20, height: 20))
+            photoView.contentMode = .center
+        }
+        valueSlider.value = Float(model.progress)
+        valueLabel.text = "\(round(model.progress * 100)) %"
+        noteTextView.text = model.note
+        
+        updateBackButton()
     }
         
+    private func updateBackButton() {
+        saveButtonItem.isEnabled = model.isPhotoSet && (model.title.count > 0)
+    }
+    
     private func saveData() {
-        print("title: \(String(describing: titleTextField.text))")
-        print("progress: \(String(describing: valueLabel.text))")
-        print("photo: \(String(describing: photoView.image))")
-        print("note: \(String(describing: noteTextView.text))")
+        print("title: \(String(describing: model.title))")
+        print("progress: \(model.progress)")
+        print("photo: \(String(describing: model.photo))")
+        print("note: \(String(describing: model.note))")
     }
     
     private func pickPhoto(completion: (_ image: UIImage?) -> Void) {
