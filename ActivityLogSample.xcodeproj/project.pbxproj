@@ -15,6 +15,8 @@
 		F447A64C24B7DD4200DD9C96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F447A64A24B7DD4200DD9C96 /* LaunchScreen.storyboard */; };
 		F447A65724B7DD4200DD9C96 /* ActivityLogSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F447A65624B7DD4200DD9C96 /* ActivityLogSampleTests.swift */; };
 		F447A66424B7DDD700DD9C96 /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F447A66324B7DDD700DD9C96 /* ActivityDetailViewController.swift */; };
+		F47B835524B9684900510E30 /* ActivityDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47B835424B9684900510E30 /* ActivityDetailInteractor.swift */; };
+		F47B835724B9F8B600510E30 /* ActivityDetailInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47B835624B9F8B600510E30 /* ActivityDetailInteractorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		F447A65624B7DD4200DD9C96 /* ActivityLogSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogSampleTests.swift; sourceTree = "<group>"; };
 		F447A65824B7DD4200DD9C96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F447A66324B7DDD700DD9C96 /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
+		F47B835424B9684900510E30 /* ActivityDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailInteractor.swift; sourceTree = "<group>"; };
+		F47B835624B9F8B600510E30 /* ActivityDetailInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailInteractorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 		F447A65524B7DD4200DD9C96 /* ActivityLogSampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				F47B835624B9F8B600510E30 /* ActivityDetailInteractorTests.swift */,
 				F447A65624B7DD4200DD9C96 /* ActivityLogSampleTests.swift */,
 				F447A65824B7DD4200DD9C96 /* Info.plist */,
 			);
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				F447A66324B7DDD700DD9C96 /* ActivityDetailViewController.swift */,
+				F47B835424B9684900510E30 /* ActivityDetailInteractor.swift */,
 			);
 			path = ActivityDetail;
 			sourceTree = "<group>";
@@ -223,6 +229,7 @@
 				F447A64424B7DD3E00DD9C96 /* ViewController.swift in Sources */,
 				F447A64024B7DD3E00DD9C96 /* AppDelegate.swift in Sources */,
 				F447A64224B7DD3E00DD9C96 /* SceneDelegate.swift in Sources */,
+				F47B835524B9684900510E30 /* ActivityDetailInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47B835724B9F8B600510E30 /* ActivityDetailInteractorTests.swift in Sources */,
 				F447A65724B7DD4200DD9C96 /* ActivityLogSampleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

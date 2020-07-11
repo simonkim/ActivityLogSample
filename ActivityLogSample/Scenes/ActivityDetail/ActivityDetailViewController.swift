@@ -8,12 +8,6 @@
 
 import UIKit
 
-// Photo = "Place holder"
-// Title = "Just Did!"
-//  - Progress      Slider      %
-// Note = "(optional)
-// 1. Input: Photo, Title, Progress, Note
-// 2. Allow Save: (Photo, TItle) are entered
 struct Activity {
     var title: String = ""
     var photo: UIImage?
@@ -41,6 +35,10 @@ extension UIColor {
     }
 }
 
+extension ActivityDetailViewController: ActivityDetailView {
+    
+}
+
 class ActivityDetailViewController: UITableViewController {
 
     @IBOutlet weak var photoView: UIImageView!
@@ -52,8 +50,6 @@ class ActivityDetailViewController: UITableViewController {
     @IBOutlet weak var labelProgress: UILabel!
     @IBOutlet weak var labelNote: UILabel!
     
-    var model = Activity()
-    
     lazy var cancelButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancel(_:)))
     }()
@@ -64,15 +60,11 @@ class ActivityDetailViewController: UITableViewController {
         return item
     }()
     
-    var computeAIColorSchemeFrom: (_ image: UIImage) -> ColorScheme = { _ in
-        let colorPairs = [
-            ColorScheme(.rgb(249, 42, 130), .rgb(126, 183, 127)),
-            ColorScheme(.rgb(44, 19, 32), .rgb(86, 102, 122)),
-        ]
-        
-        return colorPairs.randomElement()!
+    var interactor: ActivityDetailInteractor!
+    override func awakeFromNib() {
+        interactor = ActivityDetailInteractor(view: self)
     }
-
+    
     override func viewDidLoad() {
         title = "Activity Detail"
         
@@ -81,48 +73,38 @@ class ActivityDetailViewController: UITableViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapPhoto(_:)))
         photoView.addGestureRecognizer(tap)
-        
-        updateView()
+        noteTextView.delegate = self
+        interactor.send(.loadInitialData)
     }
         
     @objc
     func didTapPhoto(_ sender: UIImageView) {
-        
-        pickPhoto { image in
-            guard let image = image else {
-                return
-            }
-            model.photo = image
-            model.colorScheme = computeAIColorSchemeFrom(image)
-            updateView()
-        }
+         interactor.send(.pickPhoto)
     }
         
     @IBAction func didEditTitle(_ sender: UITextField) {
-        model.title = sender.text ?? ""
-        updateView()
+        interactor.send(.changeTitle(sender.text ?? ""))
     }
     
     @IBAction func didChangeProgress(_ sender: UISlider) {
-        model.progress = Double(sender.value)
-        updateView()
+        interactor.send(.changeProgress(Double(sender.value)))
     }
     
+    func textViewDidChange(_ textView: UITextView) {
+        interactor.send(.changeNote(textView.text))
+    }
+
     @objc func didTapCancel(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
     }
     
     @objc func didTapSave(_ sender: UIBarButtonItem) {
-        model.note = noteTextView.text
-        
-        guard model.isValidForSaving else {
-            return
-        }
-        saveData()
+        interactor.send(.save)
+
         navigationController?.popViewController(animated: true)
     }
     
-    private func updateView() {
+    func update(with model: Activity) {
         titleTextField.text = model.title
         if let photo = model.photo {
             photoView.image = photo
@@ -154,30 +136,12 @@ class ActivityDetailViewController: UITableViewController {
             view.backgroundColor = scheme.background
         }
         
-        updateBackButton()
+        saveButtonItem.isEnabled = model.isValidForSaving
     }
         
-    private func updateBackButton() {
-        saveButtonItem.isEnabled = model.isPhotoSet && (model.title.count > 0)
-    }
-    
-    private func saveData() {
-        print("title: \(String(describing: model.title))")
-        print("progress: \(model.progress)")
-        print("photo: \(String(describing: model.photo))")
-        print("note: \(String(describing: model.note))")
-    }
-    
-    private func pickPhoto(completion: (_ image: UIImage?) -> Void) {
-        // mock photo picker
-        let pickedImageURL = URL(string: "https://via.placeholder.com/90x90.png?text=I+Did+It")!
-        do {
-            let data = try Data(contentsOf: pickedImageURL)
-            completion(UIImage(data: data))
-        } catch _ {
-            completion(nil)
-        }
-    }
+}
+
+extension ActivityDetailViewController: UITextViewDelegate {
 }
 
 extension UIImage {
