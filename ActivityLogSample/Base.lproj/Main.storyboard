@@ -64,14 +64,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7IG-Pf-NZf">
-                                                    <rect key="frame" x="20" y="55" width="374" height="175"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Progress" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S24-eZ-Fcf">
                                                     <rect key="frame" x="20" y="11" width="180" height="36"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -131,6 +123,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="eYC-Z0-d8W"/>
                     <connections>
+                        <outlet property="labelNote" destination="Udn-r4-e7l" id="Bil-bC-M6X"/>
+                        <outlet property="labelProgress" destination="S24-eZ-Fcf" id="BQ9-Md-R8C"/>
                         <outlet property="noteTextView" destination="ZVC-PB-hYx" id="JdQ-c4-A1F"/>
                         <outlet property="photoView" destination="3LZ-fq-hjP" id="1Ga-2B-8Qx"/>
                         <outlet property="titleTextField" destination="co0-1u-oAC" id="3N8-KS-cLU"/>
